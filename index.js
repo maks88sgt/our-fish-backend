@@ -70,9 +70,18 @@ function initial() {
     });
 }
 
+app.use(function(req, res, next) {
+    res.header(
+        "Access-Control-Allow-Headers",
+        "x-access-token, Origin, Content-Type, Accept"
+    );
+    next();
+});
+
 // routes
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
+require('./routes/product.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
