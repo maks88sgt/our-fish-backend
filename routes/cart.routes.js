@@ -10,7 +10,7 @@ module.exports = app => {
     router.get("/:id", cart.findOne);
 
     // Update a Cart with id
-    router.put("/:id", products.update);
+    router.put("/:id", cart.update);
 
     app.use('/api/cart', router);
 };
