@@ -10,7 +10,8 @@ exports.create = (req, res) => {
     const product = new Product({
         name: req.body.name,
         price: req.body.price,
-        categories: req.body.categories,
+        units: req.body.units,
+        category: req.body.category,
         properties: req.body.properties,
         seller: req.body.seller,
         description: req.body.description,
@@ -35,7 +36,6 @@ exports.findAllBySeller = (req, res) => {
     const seller = req.params.seller;
     Product.find({})
         .then(data => {
-            console.log("!!!!!!!!!!!!!!", data)
             res.send(data);
         })
         .catch(err => {
