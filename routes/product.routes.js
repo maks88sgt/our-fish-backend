@@ -8,8 +8,8 @@ module.exports = app => {
     // Create a new Product
     router.post("/", [authJwt.verifyToken, authJwt.isModerator],products.create);
 
-    // Retrieve all Products
-    router.get("/",[authJwt.verifyToken, authJwt.isModerator], products.findAll);
+    // Retrieve all Products for particular seller
+    router.get("/seller/:seller",[authJwt.verifyToken, authJwt.isModerator], products.findAllBySeller);
 
     // Retrieve all published Products
     router.get("/published", products.findAllPublished);

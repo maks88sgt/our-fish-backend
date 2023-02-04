@@ -12,6 +12,7 @@ const User = mongoose.model(
                 ref: "Role"
             }
         ],
+        seller: String,
         orders: [{orderId: String}]
     })
 );

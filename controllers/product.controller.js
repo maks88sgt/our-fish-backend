@@ -3,8 +3,8 @@ const Product = db.product;
 
 // Create and Save a new Product
 exports.create = (req, res) => {
-    if (!req.body.title) {
-        res.status(400).send({ message: "Content can not be empty!" });
+    if (!req.body.name) {
+        res.status(400).send({ message: "Name can not be empty!" });
         return;
     }
     const product = new Product({
@@ -17,8 +17,8 @@ exports.create = (req, res) => {
         published: req.body.published ? req.body.published : false
     });
 
-    Product
-        .save(product)
+    product
+        .save()
         .then(data => {
             res.send(data);
         })
@@ -31,9 +31,11 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all Products from the database.
-exports.findAll = (req, res) => {
-    Product.find({name: ""})
+exports.findAllBySeller = (req, res) => {
+    const seller = req.params.seller;
+    Product.find({})
         .then(data => {
+            console.log("!!!!!!!!!!!!!!", data)
             res.send(data);
         })
         .catch(err => {
@@ -109,8 +111,8 @@ exports.delete = (req, res) => {
         });
 };
 
-exports.findAll = (req, res) => {
-    Product.findById("")
+/*exports.findAll = (req, res) => {
+    Product.find({})
         .then(data => {
             if (!data)
                 res.status(404).send({message: "Not found any Products"});
@@ -121,7 +123,7 @@ exports.findAll = (req, res) => {
                 .status(500)
                 .send({message: "Error retrieving Products"});
         });
-};
+};*/
 
 exports.findAllPublished = (req, res) => {
     Product.find({ published: true })
