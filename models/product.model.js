@@ -1,6 +1,6 @@
 module.exports = mongoose => {
-    const Product = mongoose.model(
-        "product",
+    return mongoose.model(
+        "Product",
         mongoose.Schema(
             {
                 name: String,
@@ -14,6 +14,4 @@ module.exports = mongoose => {
             { timestamps: true }
         )
     );
-
-    return Product;
 };

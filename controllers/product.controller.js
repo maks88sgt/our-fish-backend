@@ -1,23 +1,21 @@
 const db = require("../models");
-const Product = db.product;
+const Cart = db.cart;
 
 // Create and Save a new Product
 exports.create = (req, res) => {
-    if (!req.body.title) {
+    if (!req.body.products) {
         res.status(400).send({message: "Content can not be empty!"});
         return;
     }
     const product = new Product({
-        name: req.body.name,
-        price: req.body.price,
-        categories: req.body.categories,
-        properties: req.body.properties,
-        seller: req.body.seller,
-        description: req.body.description,
-        published: req.body.published ? req.body.published : false
+        products: req.body.products,
+        contactInfo: req.body.contactInfo,
+        shippingAddress: req.body.shippingAddress,
+        comment: req.body.comment,
+        status: "Created"
     });
 
-    Product
+   product
         .save(product)
         .then(data => {
             res.send(data);
@@ -25,21 +23,7 @@ exports.create = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating the Product."
-            });
-        });
-};
-
-// Retrieve all Products from the database.
-exports.findAll = (req, res) => {
-    Product.find({name: ""})
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving products."
+                    err.message || "Some error occurred while creating the Cart."
             });
         });
 };
@@ -48,7 +32,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Product.findById(id)
+    Cart.findById(id)
         .then(data => {
             if (!data)
                 res.status(404).send({message: "Not found Product with id " + id});
@@ -71,71 +55,19 @@ exports.update = (req, res) => {
 
     const id = req.params.id;
 
-    Product.findByIdAndUpdate(id, req.body, {useFindAndModify: false})
+    Cart.findByIdAndUpdate(id, req.body, {useFindAndModify: false})
         .then(data => {
             if (!data) {
                 res.status(404).send({
-                    message: `Cannot update Product with id=${id}. Maybe Product was not found!`
+                    message: `Cannot update Cart with id=${id}. Maybe Cart was not found!`
                 });
-            } else res.send({message: "Product was updated successfully."});
+            } else res.send({message: "Cart was updated successfully."});
         })
         .catch(() => {
             res.status(500).send({
-                message: "Error updating Product with id=" + id
+                message: "Error updating Cart with id=" + id
             });
         });
 };
 
-// Delete a Product with the specified id in the request
-exports.delete = (req, res) => {
-    const id = req.params.id;
 
-    Product.findByIdAndRemove(id)
-        .then(data => {
-            if (!data) {
-                res.status(404).send({
-                    message: `Cannot delete Product with id=${id}. Maybe Product was not found!`
-                });
-            } else {
-                res.send({
-                    message: "Product was deleted successfully!"
-                });
-            }
-        })
-        .catch(() => {
-            res.status(500).send({
-                message: "Could not delete Product with id=" + id
-            });
-        });
-};
-
-// Delete all Products for particular seller from the database.
-exports.deleteAll = (req, res) => {
-    const seller = req.body.seller
-    Product.deleteMany({seller})
-        .then(data => {
-            res.send({
-                message: `${data.deletedCount} Products were deleted successfully!`
-            });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while removing all Products."
-            });
-        });
-};
-
-// Find all published Products
-exports.findAllPublished = (req, res) => {
-    Product.find({published: true})
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving Products."
-            });
-        });
-};

@@ -82,6 +82,7 @@ app.use(function(req, res, next) {
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/product.routes')(app);
+require('./routes/cart.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
