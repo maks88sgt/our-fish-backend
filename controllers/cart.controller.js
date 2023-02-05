@@ -2,22 +2,17 @@ const db = require("../models");
 const Cart = db.cart;
 
 exports.create = (req, res) => {
-    if (!req.body.product) {
-        res.status(400).send({message: "Content can not be empty!"});
+    if (!req.body.products) {
+        res.status(400).send({message: "Products can not be empty!"});
         return;
     }
     const cart = new Cart({
-        name: req.body.name,
-        price: req.body.price,
-        categories: req.body.categories,
-        properties: req.body.properties,
-        seller: req.body.seller,
-        description: req.body.description,
-        published: req.body.published ? req.body.published : false
+        products: req.body.products,
+        status: "Created"
     });
 
-    Cart
-        .save(cart)
+    cart
+        .save()
         .then(data => {
             res.send(data);
         })
@@ -36,13 +31,13 @@ exports.findOne = (req, res) => {
     Cart.findById(id)
         .then(data => {
             if (!data)
-                res.status(404).send({ message: "Not found Cart with id " + id });
+                res.status(404).send({message: "Not found Cart with id " + id});
             else res.send(data);
         })
         .catch(err => {
             res
                 .status(500)
-                .send({ message: "Error retrieving Cart with id=" + id });
+                .send({message: "Error retrieving Cart with id=" + id});
         });
 };
 
@@ -55,17 +50,35 @@ exports.update = (req, res) => {
 
     const id = req.params.id;
 
-    Cart.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    Cart.findByIdAndUpdate(id, req.body, {useFindAndModify: false})
         .then(data => {
             if (!data) {
                 res.status(404).send({
                     message: `Cannot update Cart with id=${id}. Maybe Cart was not found!`
                 });
-            } else res.send({ message: "Cart was updated successfully." });
+            } else res.send({message: "Cart was updated successfully."});
         })
         .catch(err => {
             res.status(500).send({
                 message: "Error updating Cart with id=" + id
             });
+        });
+};
+
+exports.findAllPurchasesForSeller = (req, res) => {
+    const seller = req.params.seller;
+
+    Cart.find({"products.seller": seller})
+        .then(data => {
+            if (!data)
+                res.status(404).send({message: "Not found Carts for particular seller"});
+            else {
+                res.send(data)
+            }
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .send({message: "Error retrieving Carts for seller"});
         });
 };

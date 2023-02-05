@@ -34,7 +34,7 @@ exports.create = (req, res) => {
 // Retrieve all Products from the database.
 exports.findAllBySeller = (req, res) => {
     const seller = req.params.seller;
-    Product.find({})
+    Product.find({seller})
         .then(data => {
             res.send(data);
         })

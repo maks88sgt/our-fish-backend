@@ -8,12 +8,12 @@ const Cart = mongoose.model(
                     productId: Number,
                     quantity: Number,
                     name: String,
-                    price: Number
+                    price: Number,
+                    seller: String
                 }
             ],
             contactInfo: {
-                firstName: String,
-                lastName: String,
+                name: String,
                 email: String,
                 phone: String
             },
@@ -21,10 +21,11 @@ const Cart = mongoose.model(
                 city: String,
                 street: String,
                 house: String,
+                entrance: String,
                 apartment: String,
             },
             comment: String,
-            status: {type: String, enum: ["Created", "Canceled", "Paid", "Shipped", "Completed"]}
+            status: {type: String, enum: ["Created", "Purchased", "Confirmed", "Canceled", "Paid", "Shipped", "Completed"]}
         },
         {timestamps: true})
 );

@@ -9,6 +9,9 @@ module.exports = app => {
     // Retrieve a single Cart with id
     router.get("/:id", cart.findOne);
 
+    // Retrieve a single Cart with id
+    router.get("/seller/:seller", cart.findAllPurchasesForSeller);
+
     // Update a Cart with id
     router.put("/:id", cart.update);
 

@@ -13,7 +13,10 @@ const User = mongoose.model(
             }
         ],
         seller: String,
-        orders: [{orderId: String}]
+        orders: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Cart"
+        }]
     })
 );
 
