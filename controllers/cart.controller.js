@@ -68,7 +68,12 @@ exports.update = (req, res) => {
 exports.findAllPurchasesForSeller = (req, res) => {
     const seller = req.params.seller;
 
-    Cart.find({"products.seller": seller})
+    Cart.find({
+        $and: [
+            {"products.seller": seller},
+            { status:{$ne: "Created"}}
+        ]
+    })
         .then(data => {
             if (!data)
                 res.status(404).send({message: "Not found Carts for particular seller"});

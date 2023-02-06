@@ -1,4 +1,5 @@
 const cart = require("../controllers/cart.controller");
+const {authJwt} = require("../middlewares");
 module.exports = app => {
 
     const router = require("express").Router();
@@ -10,7 +11,7 @@ module.exports = app => {
     router.get("/:id", cart.findOne);
 
     // Retrieve a single Cart with id
-    router.get("/seller/:seller", cart.findAllPurchasesForSeller);
+    router.get("/seller/:seller", [authJwt.verifyToken, authJwt.isModerator], cart.findAllPurchasesForSeller);
 
     // Update a Cart with id
     router.put("/:id", cart.update);
